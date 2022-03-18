@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Playwright Form Demo</title>
+    </head>
+    <body>
+        <style>
+            body {
+                font-family: -apple-system, "system-ui", "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+                padding: 20px;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            input,
+            select {
+                width: 100%;
+            }
+
+            #example-form div {
+                padding-top: 10px;
+            }
+
+            #example-form input[type=submit] {
+                padding: 10px;
+            }
+        </style>
+        <h1>Example Form</h1>
+        <form id="example-form">
+            <div>
+                <label for="input-text">Text Input</label>
+                <input type="text" id="input-text" name="input-text">
+            </div>
+            <div>
+                <label for="input-date">Date Input</label>
+                <input type="date" id="input-date" name="input-date">
+            </div>
+
+            <div>
+                <label for="input-time">Favorite Time</label>
+                <input type="time" id="input-time" name="input-time">
+            </div>
+            <div>
+                <label for="input-local-datetime">Local Datetime</label>
+                <input type="datetime-local" id="input-local-datetime" name="input-local-datetime">
+            </div>
+            <div>
+                <label for="input-checkbox">Checkbox Input</label>
+                <input type="checkbox" id="input-checkbox" name="input-checkbox">
+            </div>
+
+            <div>
+                <label for="favorite-color">Favorite Color</label>
+                <select name="colors" id="favorite-color">
+                    <option value="">--Please choose an option--</option>
+                    <option value="red">Red</option>
+                    <option value="yellow">Yello</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                </select>
+            </div>
+            <div>
+                <input type="submit" />
+            </div>
+        </form>
+        <hr />
+        <div>
+            <h1>Latest Submission</h1>
+            <div id="submission">
+            </div>
+        </div>
+
+        <script>
+            const form = document.getElementById("example-form");
+            const labels = document.getElementsByTagName('label');
+
+            const fields = [];
+            for (const label of labels) {
+                const entry = document.getElementById(label.htmlFor);
+                fields.push({
+                    label,
+                    entry,
+                });
+            };
+
+            let submissionElem = document.getElementById("submission");
+            const renderSubmission = () => {
+                const next = document.createElement("div");
+                for (const { label, entry } of fields) {
+                    const row = document.createElement("div");
+                    row.innerText = `${label.innerText}: ${entry.type === 'checkbox' ? entry.checked : (entry.value || '-')}`;
+                    next.appendChild(row);
+                }
+                submissionElem.replaceWith(next);
+                submissionElem = next;
+            };
+
+            renderSubmission();
+            form.addEventListener('submit', evt => {
+                evt.preventDefault();
+                renderSubmission();
+            });
+        </script>
+    </body>
+</html>
